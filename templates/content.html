@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <!-- Bootstrap CSS -->
+    <script src="https://unpkg.com/vue@3"></script>
+  <!-- Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Custom Styles (Opcional) -->
+    <style>
+        body {
+            padding-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container">
+        <!-- Título -->
+        <h1 class="text-center my-4">Conteúdo Valorant</h1>
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="form-control">
+                            <label for="exampleFormControlInput1">Content</label>
+                            {% raw %}
+                            <select class="form-control" id="exampleFormControlInput1" v-model="content">
+                                <option value="0">Selecione</option>
+                                <option v-for="item in items" v-bind:value="item">{{item}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="row" v-for="agent in contents">{{ agent }}</div>
+        </div>
+        <div>{{ content }}</div>
+        {% endraw %}
+        <button type="button" class="btn btn-primary" @click="addContent()">Adicionar</button>
+    </div>
+
+
+
+    <script>
+         const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    items: ["Agentes", "Skins", "Mapas", "Equipamentos", "Cards", "Títulos"],
+                    content: '',
+                    contents: '',
+                }
+            },
+            methods: {
+                searchItem() {
+
+                },
+                getItems() {
+                    axios.get('http://127.0.0.1:8000/content/items/').then(function (response) {
+                        this.content = response.data;
+                        console.log(response.data);
+                    })
+                },
+                addContent() {
+                    console.log('foi');
+                    this.contents = this.content
+                }
+            },
+            mounted() {
+
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

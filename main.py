@@ -32,7 +32,7 @@ class RiotId(BaseModel):
 @app.post("/account/")
 async def account(riotid: RiotId):
     async with httpx.AsyncClient() as client:
-        response = await client.get(f"{URL}/riot/account/v1/accounts/by-riot-id/{riotid.name}/{riotid.tag}", headers=headers)
+        response = await client.get(f"{URL}/riot/account/v1/accounts/by-riot-id/{riotid.name}/{riotid.tag}?locale=pt-BR", headers=headers)
 
     if response.status_code == 200:
         return response.json()
@@ -63,3 +63,18 @@ async def matches_matchlist(puuid: Puuid):
     else:
         return {"error": "Falha ao buscar dados da API externa", "status_code": response.status_code}
 
+
+@app.get("/content")
+async def content(request: Request):
+    return templates.TemplateResponse("content.html", {"request": request, "url": "https://http://127.0.0.1:8000/content/items/"})
+
+@app.get("/content/items")
+async def content(request: Request):
+    URLC = "https://br.api.riotgames.com"
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{URLC}/val/content/v1/contents/?locale=pt-BR", headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {"error": "Falha ao buscar dados da API externa", "status_code": response.status_code}
