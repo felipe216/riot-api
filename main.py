@@ -51,3 +51,15 @@ async def account_by_puuid(puuid: Puuid):
         return response.json()
     else:
         return {"error": "Falha ao buscar dados da API externa", "status_code": response.status_code}
+
+
+@app.post("/matches/matchlist")
+async def matches_matchlist(puuid: Puuid):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{URL}/val/match/v1/matchlists/by-puuid/{puuid.puuid}", headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {"error": "Falha ao buscar dados da API externa", "status_code": response.status_code}
+
