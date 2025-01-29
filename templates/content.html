@@ -22,28 +22,24 @@
         <!-- Título -->
         <h1 class="text-center my-4">Conteúdo Valorant</h1>
 
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="form-control">
-                            <label for="exampleFormControlInput1">Content</label>
-                            {% raw %}
-                            <select class="form-control" id="exampleFormControlInput1" v-model="content">
-                                <option value="0">Selecione</option>
-                                <option v-for="item in items" v-bind:value="item">{{item}}</option>
-                            </select>
-                        </div>
-                    </div>
+        <div>
+            <h1>Skins do Valorant</h1>
+            {% raw %}
+            <button @click="fetchSkins">Carregar Skins</button>
+            <div v-if="loading">Carregando...</div>
+            <div v-if="error" style="color: red;">Erro ao carregar skins: {{ error }}</div>
+        
+            <div v-if="skins">
+              <div v-for="skin in skins" :key="skin.id" class="skin-card">
+                <img :src="https://media.valorant-api.com/weaponskins/{{ skin.id }}/displayicon.png" alt="Imagem da Skin" />
+                <div>
+                  <h3>{{ skin.name }}</h3>
+                  
                 </div>
+              </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="row" v-for="agent in contents">{{ agent }}</div>
-        </div>
-        <div>{{ content }}</div>
+          </div>
         {% endraw %}
-        <button type="button" class="btn btn-primary" @click="addContent()">Adicionar</button>
     </div>
 
 
@@ -57,6 +53,9 @@
                     items: ["Agentes", "Skins", "Mapas", "Equipamentos", "Cards", "Títulos"],
                     content: '',
                     contents: '',
+                    skins: [],
+                    loading: false,
+                    error: null
                 }
             },
             methods: {
@@ -72,6 +71,14 @@
                 addContent() {
                     console.log('foi');
                     this.contents = this.content
+                },
+                async fetchSkins() {
+                this.loading = true; // Define o estado de carregamento como verdadeiro
+                this.error = null; // Reseta o erro anterior
+                const response = await axios.get('http://127.0.0.1:8000/content/items/')
+                this.skins = response.data.skins
+                console.log(response.data);
+                this.loading = false; //              
                 }
             },
             mounted() {
