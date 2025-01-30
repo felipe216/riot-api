@@ -81,3 +81,8 @@ async def content(request: Request):
     else:
         print(response.json())
         return {"error": "Falha ao buscar dados da API externa", "status_code": response.status_code}
+    
+
+@app.get("/items")
+async def items(request: Request):
+    return templates.TemplateResponse("items.html", {"request": request, "url": "https://http://127.0.0.1:8000/content/items/"})
