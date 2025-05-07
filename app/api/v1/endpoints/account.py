@@ -4,11 +4,11 @@ from app.services.riot_service import get_account_by_riod_id, get_account_by_rio
 
 router = APIRouter()
 
-@router.post("/account/")
+@router.post("/")
 async def account(riotid: RiotId):
     return await get_account_by_riod_id(riotid)
 
 
-@router.post("/account/by-puuid/")
+@router.post("/by-puuid/")
 async def account_by_puuid(puuid: Puuid):
     return await get_account_by_riot_id(puuid)
