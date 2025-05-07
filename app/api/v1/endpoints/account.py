@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.models.riot import RiotId, Puuid
-from services.riot_service import get_account_by_riod_id, get_account_by_riot_id
+from app.services.riot_service import get_account_by_riod_id, get_account_by_riot_id
 
 router = APIRouter()
 

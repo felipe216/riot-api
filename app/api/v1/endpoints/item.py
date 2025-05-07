@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from services.riot_service import get_content
+from app.services.riot_service import get_content
 from fastapi import Request
 
 router = APIRouter()
