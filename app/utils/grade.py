@@ -18,4 +18,9 @@ def calculate_grade(matches: list, riotId: RiotId):
                 total_deaths += player.deaths
                 total_assists += player.assists
                 break
-    return total_score
+    return {
+        'total_score': total_score,
+        'total_kills': total_kills,
+        'total_deaths': total_deaths,
+        'total_assists': total_assists
+    }
