@@ -15,10 +15,10 @@ class Player:
         self.bodyshots = stats["bodyshots"]
         self.headshots = stats["headshots"]
         self.legshots = stats["legshots"]
-        self.c_cast = ability_casts["c_cast"]
-        self.q_cast = ability_casts["q_cast"]
-        self.e_cast = ability_casts["e_cast"]
-        self.x_cast = ability_casts["x_cast"]
+        self.c_cast = 0 if ability_casts["grenade"] is None else ability_casts["grenade"]
+        self.q_cast = 0 if ability_casts["ability1"] is None else ability_casts["ability1"]
+        self.e_cast = 0 if ability_casts["ability2"] is None else ability_casts["ability2"]
+        self.x_cast = 0 if ability_casts["ultimate"] is None else ability_casts["ultimate"]
         self.damage_made = damage_made
         self.damage_received = damage_received
         self.afk_rounds = behaviour["afk_rounds"]
@@ -48,14 +48,14 @@ class Player:
         return cls(
             name=data["name"],
             tag=data["tag"],
-            team=data["team"],
-            character=data["character"],
-            tier=data["currenttier_patched"],
+            team=data["team_id"],
+            character=data["agent"],
+            tier=data["tier"],
             stats=data["stats"],
             ability_casts=data["ability_casts"],
-            damage_made=data["damage_made"],
-            damage_received=data["damage_received"],
-            behaviour=data["behaviour"],
+            damage_made=data["stats"]["damage"]["dealt"],
+            damage_received=data["stats"]["damage"]["received"],
+            behaviour=data["behavior"],
             first_kills=data["first_kills"],
             first_deaths=data["first_deaths"]
         )
