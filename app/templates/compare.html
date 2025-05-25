@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+    <div id="app" class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Comparação de Contas</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="account1">Conta 1:</label>
+                    <div class="form-group">
+                        <input type="text" id="account1" class="form-control" placeholder="Nome da Conta 1">
+                        <input type="text" id="account1" class="form-control" placeholder="Tag da Conta 1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="account2">Conta 2:</label>
+                    <div class="form-group">
+                        <input type="text" id="account2" class="form-control" placeholder="Nome da Conta 2">
+                        <input type="text" id="account2" class="form-control" placeholder="Tag da Conta 2">
+                    </div>
+                </div>
+                <button class="btn btn-primary">Comparar</button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const { createApp, ref, onMounted } = Vue;
+
+    const app = createApp({
+        setup() {
+            account1 = ref({}),
+            account2 = ref({}),
+
+            function getData() {
+                
+            }
+
+
+        },
+    })
+</script>
+{% endblock %}
