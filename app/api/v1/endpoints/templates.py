@@ -22,3 +22,7 @@ async def content(request: Request):
 @router.get("/items")
 async def items(request: Request):
     return templates.TemplateResponse("items.html", {"request": request, "url": "https://http://127.0.0.1:8000/content/items/"})
+
+@router.get("/compare")
+async def compare(request: Request):
+    return templates.TemplateResponse("compare.html", {"request": request})

@@ -19,7 +19,7 @@ def calculate_grade(matches: list, riotId: RiotId):
                 total_assists += player.assists
                 break
     return {
-        'total_score': total_score,
+        'total_score': (total_score*100).__round__(0),
         'total_kills': total_kills,
         'total_deaths': total_deaths,
         'total_assists': total_assists

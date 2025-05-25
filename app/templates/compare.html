@@ -6,24 +6,35 @@
     <div id="app" class="container">
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title">Comparação de Contas</h2>
+                <h2 class="card-title">Account Comparison</h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
-                    <label for="account1">Conta 1:</label>
+                    <label for="account1">Account 1:</label>
                     <div class="form-group">
-                        <input type="text" id="account1" class="form-control" placeholder="Nome da Conta 1">
-                        <input type="text" id="account1" class="form-control" placeholder="Tag da Conta 1">
+                        <input type="text" id="account1" class="form-control mt-2" placeholder="Account 1 name" v-model="account1.name">
+                        <input type="text" id="account1" class="form-control mt-2" placeholder="Account 1 tag" v-model="account1.tag">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="account2">Conta 2:</label>
+                    <label for="account2">Account 2:</label>
                     <div class="form-group">
-                        <input type="text" id="account2" class="form-control" placeholder="Nome da Conta 2">
-                        <input type="text" id="account2" class="form-control" placeholder="Tag da Conta 2">
+                        <input type="text" id="account2" class="form-control mt-2" placeholder="Account 2 name" v-model="account2.name">
+                        <input type="text" id="account2" class="form-control mt-2" placeholder="Account 2 tag" v-model="account2.tag">
                     </div>
                 </div>
-                <button class="btn btn-primary">Comparar</button>
+                <button class="btn btn-primary" @click="compareAccounts">Comparar</button>
+            </div>
+        </div>
+
+        <div class="card mt-2" v-if="winner !== ''">
+            <div class="card-body">
+                <h5 class="card-title">Winner:</h5>
+                {% raw %}
+                <p>{{ winner }} is better than {{ account2.name }}</p>
+                <p>{{ response1 }}</p>
+                <p>{{ response2 }}</p>
+                {% endraw %}
             </div>
         </div>
     </div>
@@ -36,15 +47,54 @@
 
     const app = createApp({
         setup() {
-            account1 = ref({}),
-            account2 = ref({}),
+            const account1 = ref({
+                name: '',
+                tag: ''
+            })
+            const account2 = ref({
+                name: '',
+                tag: ''
+            })
+            const response1 = ref({})
+            const response2 = ref({});
+            const winner = ref('');
 
-            function getData() {
-                
+            async function compareAccounts() {
+                const url = 'http://localhost:8000/api/v1/player/grade/?mode=competitive';
+
+                await axios.post(url, account1.value).then(response => {
+                    response1.value = response.data;
+                })
+                await axios.post(url, account2.value).then(response => {
+                    response2.value = response.data;
+                })
+                winner.value = getWinner();
+                console.log(winner.value)
             }
 
+            function getWinner() {
+                const grade1 = parseInt(response1.value.total_score);
+                const grade2 = parseInt(response2.value.total_score);
+                if (grade1 > grade2) {
+                    return account1.value.name;
+                } else {
+                    return account2.value.name;
+                }
+            }
+
+            return {
+                account1,
+                account2,
+                response1,
+                response2,
+                compareAccounts,
+                getWinner,
+                winner
+            }
 
         },
     })
+
+    app.mount('#app')
 </script>
 {% endblock %}
