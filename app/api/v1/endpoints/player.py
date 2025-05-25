@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from app.models.player import Player
 from app.utils import examples
-from fastapi import Request
+from fastapi import Request, HTTPException
 
 from app.services.api_service import get_matchlist_by_name
 from app.utils.grade import calculate_grade
@@ -34,4 +34,4 @@ async def player_grade(riotid: RiotId):
     try:
         return calculate_grade(match_list, riotid)
     except Exception as e:
-        return {"error": str(e), "status_code": 400}
+        return HTTPException(status_code=400, detail=str(e))
