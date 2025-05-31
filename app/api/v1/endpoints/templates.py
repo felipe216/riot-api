@@ -26,3 +26,7 @@ async def items(request: Request):
 @router.get("/compare")
 async def compare(request: Request):
     return templates.TemplateResponse("compare.html", {"request": request})
+
+@router.get("/grade")
+async def grade(request: Request):
+    return templates.TemplateResponse("grade.html", {"request": request})

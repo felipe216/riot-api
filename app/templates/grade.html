@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+    <div id="app" class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Account data</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="account1">Account:</label>
+                    <div class="form-group">
+                        <input type="text" id="account1" class="form-control mt-2" placeholder="Account 1 name" v-model="account1.name">
+                        <input type="text" id="account1" class="form-control mt-2" placeholder="Account 1 tag" v-model="account1.tag">
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-2" @click="calculateGrade">Calculate grade</button>
+            </div>
+        </div>
+
+        <div class="card mt-2" v-if="response1 !== ''">
+            <div class="card-body">
+                <h5 class="card-title">Data:</h5>
+                {% raw %}
+                <p>{{ response1.grade }}</p>
+                {% endraw %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const { createApp, ref, onMounted } = Vue;
+
+    const app = createApp({
+        setup() {
+            const account1 = ref({
+                name: '',
+                tag: ''
+            })
+            const account2 = ref({
+                name: '',
+                tag: ''
+            })
+            const response1 = ref('')
+            const response2 = ref({});
+            const winner = ref('');
+
+            async function calculateGrade() {
+                var url = `http://localhost:8000/api/v1/player/matchlist/${account1.value.name}/${account1.value.tag}`;
+
+                await axios.get(url, account1.value).then(response => {
+                    console.log(response.data)
+                    response1.value = response.data;
+                })
+            }
+            return {
+                account1,
+                account2,
+                response1,
+                calculateGrade,
+            }
+
+        },
+    })
+
+    app.mount('#app')
+</script>
+{% endblock %}

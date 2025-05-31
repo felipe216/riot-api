@@ -18,9 +18,9 @@ URL = "https://api.henrikdev.xyz"
 headers = {"Authorization": API_KEY}
 
 
-async def get_matchlist_by_name(riotId: RiotId):
+async def get_matchlist_by_name(riotId: RiotId, mode: str = "competitive"):
     async with httpx.AsyncClient() as client:
-        response = await client.get(f"{URL}/valorant/v4/matches/br/pc/{riotId['name']}/{riotId['tag']}", headers=headers)
+        response = await client.get(f"{URL}/valorant/v4/matches/br/pc/{riotId['name']}/{riotId['tag']}?mode={mode}", headers=headers)
 
     if response.status_code == 200:
         return response.json()

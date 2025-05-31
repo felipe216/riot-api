@@ -27,11 +27,20 @@ async def player(request: Request):
 
 
 @router.post("/grade")
-async def player_grade(riotid: RiotId):
-    riotid = riotid.model_dump()
-    match_list = await get_matchlist_by_name(riotid)
-
+async def player_grade(riot_id: RiotId, mode: str = "competitive"):
+    riot_id = riot_id.model_dump()
+    match_list = await get_matchlist_by_name(riot_id, mode)
+    print(match_list)
     try:
-        return calculate_grade(match_list, riotid)
+        return calculate_grade(match_list, riot_id)
     except Exception as e:
         return HTTPException(status_code=400, detail=str(e))
+    
+@router.get("/matchlist/{name}/{tag}")
+async def matches_matchlist(name: str, tag: str):
+    riotid = RiotId(name=name, tag=tag).model_dump()
+    match_list = await get_matchlist_by_name(riotid)
+
+    grade = calculate_grade(match_list, riotid)
+
+    return {"match_list": match_list, "grade": grade}
